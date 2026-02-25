@@ -1,0 +1,74 @@
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface PageTransitionProps {
+  isAnimating: boolean;
+  onComplete: () => void;
+}
+
+export function PageTransition({ isAnimating, onComplete }: PageTransitionProps) {
+  return (
+    <AnimatePresence>
+      {isAnimating && (
+        <div className="page-transition-overlay">
+          {/* Multiple layered panels for dramatic effect */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: [0, 1, 1, 0] }}
+            transition={{ 
+              duration: 1, 
+              times: [0, 0.4, 0.6, 1],
+              ease: [0.76, 0, 0.24, 1]
+            }}
+            onAnimationComplete={onComplete}
+            className="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 origin-left z-[9999]"
+          >
+            {/* Inner content during transition */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: [0, 1, 1, 0], scale: [0.5, 1, 1, 0.5] }}
+              transition={{ duration: 1, times: [0, 0.35, 0.65, 1] }}
+              className="h-full flex items-center justify-center"
+            >
+              <div className="text-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.8, ease: 'linear' }}
+                  className="w-16 h-16 mx-auto mb-4 border-4 border-white/30 border-t-white rounded-full"
+                />
+                <div className="text-white text-2xl font-black tracking-wider">
+                  STARTUP<span className="text-orange-200">CLUB</span>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Secondary panel */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: [0, 1, 1, 0] }}
+            transition={{ 
+              duration: 1, 
+              times: [0, 0.4, 0.6, 1],
+              ease: [0.76, 0, 0.24, 1],
+              delay: 0.05
+            }}
+            className="absolute inset-0 bg-orange-800 origin-left z-[9998]"
+          />
+
+          {/* Third panel */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: [0, 1, 1, 0] }}
+            transition={{ 
+              duration: 1, 
+              times: [0, 0.4, 0.6, 1],
+              ease: [0.76, 0, 0.24, 1],
+              delay: 0.1
+            }}
+            className="absolute inset-0 bg-orange-900 origin-left z-[9997]"
+          />
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}

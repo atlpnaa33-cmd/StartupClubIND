@@ -1,0 +1,56 @@
+import { useEffect, useState } from 'react';
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  duration: number;
+  delay: number;
+  opacity: number;
+}
+
+export function FloatingParticles() {
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  useEffect(() => {
+    const items: Particle[] = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 6 + 2,
+      duration: Math.random() * 15 + 10,
+      delay: Math.random() * 5,
+      opacity: Math.random() * 0.15 + 0.05,
+    }));
+    setParticles(items);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="absolute rounded-full bg-orange-400"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            opacity: p.opacity,
+            animation: `particleFloat ${p.duration}s ease-in-out ${p.delay}s infinite`,
+          }}
+        />
+      ))}
+      {/* Large morphing blob */}
+      <div
+        className="absolute w-[500px] h-[500px] bg-gradient-to-br from-orange-200/10 to-orange-400/5 animate-morph-rotate"
+        style={{ top: '30%', right: '-5%' }}
+      />
+      <div
+        className="absolute w-[400px] h-[400px] bg-gradient-to-tr from-orange-100/10 to-orange-300/5 animate-morph-rotate"
+        style={{ bottom: '20%', left: '-5%', animationDelay: '5s', animationDirection: 'reverse' }}
+      />
+    </div>
+  );
+}
